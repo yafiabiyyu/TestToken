@@ -4,28 +4,23 @@ pragma solidity 0.6.8;
 import "./Token.sol";
 
 
-contract TokenTest is Token {
+contract TokenTests is Token {
 
-    uint256 constant private MAX_UINT26 = 2**256 - 1;
+    uint256 constant private MAX_UINT256 = 2**256 - 1;
     mapping (address => uint256) public balances;
     mapping (address => mapping (address => uint256)) public allowed;
 
     string public name;
     uint8 public decimals;
     string public symbol;
-    uint256 public totalSupply;
 
-    constructor(
-        uint256 _initialAmount,
-        string memory _tokenName,
-        uint8 _tokenDecimals,
-        string memory _tokenSymbol
-    ) public {
-        balances[msg.sender] = _initialAmount;
-        totalSupply = _initialAmount;
-        name = _tokenName;
-        decimals = _tokenDecimals;
-        symbol = _tokenSymbol;
+    constructor() public {
+        totalSupply = 20000000;
+        name = "DevToken";
+        decimals = 2;
+        symbol = "DT";
+        balances[msg.sender] = totalSupply;
+        emit Transfer(address(this),msg.sender,totalSupply);
     }
 
     function transfer(address _to, uint256 _value) public override returns (bool success){
@@ -41,7 +36,7 @@ contract TokenTest is Token {
         require(balances[_from] >= _value && allowance >= _value, "");
         balances[_to] += _value;
         balances[_from] -= _value;
-        if(allowance < MAX_UINT26){
+        if(allowance < MAX_UINT256){
             allowed[_from][msg.sender] -= _value;
         }
         emit Transfer(_from,_to,_value);

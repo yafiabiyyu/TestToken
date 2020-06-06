@@ -3,6 +3,8 @@ pragma solidity 0.6.8;
 
 abstract contract Token {
 
+	uint256 public totalSupply;
+
 	// @param _owner the address from which the balance will be retrived
 	// @return The balance
 	function balanceOf(address _owner) public virtual view returns(uint256 balance);
